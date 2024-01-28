@@ -1,9 +1,13 @@
+import azure.functions as func
+import datetime
+import json
+import logging
+import os
+
 from aiohttp import web
 from aiogram import F, Bot, Dispatcher, types
 from aiogram.filters.command import Command
 from PIL import Image
-import os
-import logging
 import asyncio
 
 #prep
@@ -16,8 +20,7 @@ base_url = f'https://ace-doberman-ultimately.ngrok-free.app/api'
 #create components
 bot = Bot(token=tg_bot_token)
 dp = Dispatcher()
-app = web.Application()
-
+app = func.FunctionApp()
 
 #wire up hook on startup
 async def on_startup(_):
@@ -26,11 +29,13 @@ async def on_startup(_):
     result = await bot.set_webhook(webhook_uri)
     logging.debug(f'<=set_webhook {result}') 
 
+on_startup(None)
+
 #message handlers
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     logging.info("begin processing /start")
-    await message.answer("[app]Hmm...let me think a bit...")
+    await message.answer("Hmm...let me think a bit...")
     await asyncio.sleep(3)
     await message.answer("Ah, got it! Hello World!")
     logging.info("end processing /start")
@@ -59,33 +64,14 @@ async def download_photo(message: types.Message, bot: Bot):
         caption="Rotated image"
     )
 
-    
-#webhook handler
-async def handle_webhook(request):
-    url = str(request.url)
-    index = url.rfind('/')
-    token = url[index+1:]
-    
-    if token == tg_bot_token:
-        logging.debug(f"Received request {request}")
-        dict = await request.json()
-        logging.debug(f"Decoded as {type(dict)}: {dict}")
-        update_result = await dp.feed_raw_update(bot, dict)
-        logging.debug(f"Update result: {update_result} {type(update_result)}")
-        resp = web.Response();
-        logging.debug(f"prepared response: {resp}/body={resp.body}")
-        return resp
-    else:
-        return web.Response(status=403)
-        
 
-
-### running the app
-if __name__ == "__main__":
-    app.router.add_post(f'/api/{tg_bot_token}', handler=handle_webhook)
-    app.on_startup.append(on_startup) 
-    web.run_app(
-        app,
-        host='0.0.0.0',
-        port=80
-    )
+@app.route(route=tg_bot_token, auth_level=func.AuthLevel.ANONYMOUS)
+async def runaway1bot(req: func.HttpRequest) -> func.HttpResponse:
+    json = req.get_json()
+    logging.info(f'get_json:{json}')
+    
+    await dp.feed_raw_update(bot, json)
+    resp = func.HttpResponse(status_code=200)
+    logging.debug(f"prepared response: {resp}/body={resp.get_body()}") 
+    return resp
+    
