@@ -1,0 +1,7 @@
+local.settings.json
+downloads
+results
+venv
+__pycache__
+prepare.ps1
+Dockerfile

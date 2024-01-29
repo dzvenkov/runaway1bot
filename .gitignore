@@ -160,3 +160,5 @@ cython_debug/
 #.idea/
 prepare.ps1
 results
+
+.python_packages

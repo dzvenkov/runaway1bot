@@ -1,0 +1,1 @@
+docker run -p 80:80 -e "TG_BOT_TOKEN=$env:TG_BOT_TOKEN" dzvenkov/runaway1bot:v1.0.0 
