@@ -1,27 +1,28 @@
 from aiohttp import web
 from aiogram import F, Bot, Dispatcher, types
 from aiogram.filters.command import Command
+import asyncio
 from PIL import Image
 import os
 import logging
-import asyncio
+
 
 #prep
 logging.basicConfig(level=logging.DEBUG)
 
 #configuration parameters
 tg_bot_token = os.environ.get('TG_BOT_TOKEN')
-base_url = f'https://ace-doberman-ultimately.ngrok-free.app/api'
+base_url = os.environ.get('WEBSITE_HOSTNAME')
+logging.info(f'starting with tg_bot_token: {tg_bot_token}; base_url: {base_url}')
 
 #create components
 bot = Bot(token=tg_bot_token)
 dp = Dispatcher()
 app = web.Application()
 
-
 #wire up hook on startup
 async def on_startup(_):
-    webhook_uri = f'{base_url}/{tg_bot_token}'
+    webhook_uri = f'{base_url}/api/{tg_bot_token}'
     logging.debug(f'=>set_webhook uri={webhook_uri}')
     result = await bot.set_webhook(webhook_uri)
     logging.debug(f'<=set_webhook {result}') 
@@ -29,15 +30,19 @@ async def on_startup(_):
 #message handlers
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    logging.info("begin processing /start")
-    await message.answer("[app]Hmm...let me think a bit...")
+    logging.info("Welcome! This bot upscales any image you send it using Real-ESGRAN model.")
+
+@dp.message(Command("test"))
+async def cmd_test(message: types.Message):
+    logging.info("begin processing /test")
+    await message.answer("[app]start test")
     await asyncio.sleep(3)
-    await message.answer("Ah, got it! Hello World!")
-    logging.info("end processing /start")
+    await message.answer(f"finish test! Hello World! incoming message date {message.date}")
+    logging.info("end processing /test")
 
 @dp.message(Command("help"))
-async def cmd_start(message: types.Message):
-    await message.answer("Upload any image")
+async def cmd_help(message: types.Message):
+    await message.answer("Upload any image and it will be upscaled using Real-ESGRAN model.")
 
 @dp.message(F.photo)
 async def download_photo(message: types.Message, bot: Bot):

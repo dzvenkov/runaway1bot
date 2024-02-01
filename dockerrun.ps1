@@ -1,1 +1,1 @@
-docker run -p 80:80 -e "TG_BOT_TOKEN=$env:TG_BOT_TOKEN" dzvenkov/runaway1bot:v1.0.0 
+docker run -p 80:80 --rm -e "TG_BOT_TOKEN=$env:TG_BOT_TOKEN" -e "WEBSITE_HOSTNAME=$env:WEBSITE_HOSTNAME" -e "APPINSIGHTS_INSTRUMENTATIONKEY=$env:APPINSIGHTS_INSTRUMENTATIONKEY" dzvenkov/runaway1bot:v1.0.0 

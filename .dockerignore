@@ -3,5 +3,5 @@ downloads
 results
 venv
 __pycache__
-prepare.ps1
+*.ps1
 Dockerfile
