@@ -30,12 +30,13 @@ async def on_startup(_):
 #message handlers
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    logging.info("Welcome! This bot upscales any image you send it using Real-ESGRAN model.")
+    logging.info("processing /start")
+    await message.answer("[local app]Welcome! This bot upscales any image you send it using Real-ESGRAN model.")
 
 @dp.message(Command("test"))
 async def cmd_test(message: types.Message):
     logging.info("begin processing /test")
-    await message.answer("[app]start test")
+    await message.answer("[local app]start test")
     await asyncio.sleep(3)
     await message.answer(f"finish test! Hello World! incoming message date {message.date}")
     logging.info("end processing /test")

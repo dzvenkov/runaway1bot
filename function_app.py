@@ -48,7 +48,8 @@ asyncio.create_task(startup())
 #message handlers
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    logging.info("Welcome! This bot upscales any image you send it using Real-ESGRAN model.")
+    logging.info("processing /start")
+    await message.answer("Welcome! This bot upscales any image you send it using Real-ESGRAN model.")
 
 @dp.message(Command("test"))
 async def cmd_test(message: types.Message):
@@ -64,6 +65,7 @@ async def cmd_help(message: types.Message):
 
 @dp.message(F.photo)
 async def download_photo(message: types.Message, bot: Bot):
+    logging.info("begin processing image upload")
     #pass it through filesystem, not optimal but simplifies debugging
     os.makedirs("./downloads", exist_ok=True)
     os.makedirs("./results", exist_ok=True)
@@ -81,6 +83,7 @@ async def download_photo(message: types.Message, bot: Bot):
         processed_image,
         caption="Rotated image"
     )
+    logging.info(f"end processing image upload {result}")
 
 
 @app.route(route=tg_bot_token, auth_level=func.AuthLevel.ANONYMOUS)
