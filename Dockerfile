@@ -8,9 +8,12 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 
-COPY ./Real-ESRGAN/requirements.txt /
-RUN pip install -r ./Real-ESRGAN/requirements.txt
+COPY ./Real-ESRGAN/requirements.txt /requirements_realesrgan.txt
+RUN pip install -r ./requirements_realesrgan.txt
 
 COPY . /home/site/wwwroot
+
+WORKDIR /home/site/wwwroot/Real-ESRGAN
+RUN python ./setup.py install
 
 WORKDIR /home/site/wwwroot
