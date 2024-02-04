@@ -56,3 +56,5 @@ NB: Uploading an image with `/rotate` caption will return a rotated image, this 
 * Logging setup needs some cleanup (e.g., some infos shall be debugs, and there are duplicating prints here and there); but Application Insights traces are functional with this setup.
 
 * For some reason, the bot creation sample I was following used the tg token as the webhook endpoint. I did the same, but thinking about it, I started to believe that it doesn't have to be like that and is not a good idea actually.
+
+![Screenshot](screenshot.jpg)
