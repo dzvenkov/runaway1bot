@@ -57,12 +57,15 @@ async def cmd_start(message: types.Message):
 
 @dp.message(Command("help"))
 async def cmd_help(message: types.Message):
+    logging.info("processing /start")
     await asyncio.sleep(1)
     await message.answer("Upload any image and it will be upscaled using <a href='https://github.com/xinntao/Real-ESRGAN'>RealESGRAN_x2plus model</a>.", parse_mode='HTML')
 
 @dp.message(F.photo)
 async def download_photo(message: types.Message, bot: Bot):
     rotate = message.caption and "/rotate" in message.caption
+    logging.info(f"processing image, rotate:{rotate}")
+    print(f"processing image, rotate:{rotate}")
 
     await asyncio.sleep(0.5) #pretend thinking :)
 
@@ -77,7 +80,9 @@ async def download_photo(message: types.Message, bot: Bot):
         message.photo[-1],
         destination=source_filename
     )
-    
+    logging.info(f"image downloaded")
+    print(f"image downloaded")   
+
     start_time = time.time()
     if rotate:
         with Image.open(source_filename) as img:
@@ -89,7 +94,8 @@ async def download_photo(message: types.Message, bot: Bot):
         output = inference.upsample(image)
         cv2.imwrite(result_filename, output)
         result_message = f"Here's the upscaled image, it took {time.time() - start_time:.1f} seconds to make it"
-
+    logging.info(f"image processed in {time.time() - start_time:.1f}")
+    print(f"image processed in {time.time() - start_time:.1f}")
     processed_image = types.FSInputFile(result_filename)
     await message.answer_photo(
         processed_image,
@@ -114,4 +120,6 @@ print("registering runaway1bot function")
 async def runaway1bot(req: func.HttpRequest) -> func.HttpResponse:
     #respond immediately, TG has 60 sec timeout, inference may take longer
     asyncio.create_task(process(req))
+    logging.info("sending response")
+    print("sending response")
     return func.HttpResponse(status_code=200)
