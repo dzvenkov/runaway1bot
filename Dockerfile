@@ -16,4 +16,6 @@ COPY . /home/site/wwwroot
 WORKDIR /home/site/wwwroot/Real-ESRGAN
 RUN python ./setup.py install
 
+RUN pip cache purge
+
 WORKDIR /home/site/wwwroot
