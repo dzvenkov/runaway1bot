@@ -58,4 +58,4 @@ NB: Uploading an image with `/rotate` caption will return a rotated image, this 
 * For some reason, the bot creation sample I was following used the tg token as the webhook endpoint. I did the same, but thinking about it, I started to believe that it doesn't have to be like that and is not a good idea actually.
 
 ![Screenshot](screenshot.jpg)
-![Screenshot 2](screenshot2.jpg)
+![Screenshot 2](screenshot2.jpeg)
