@@ -1,3 +1,6 @@
+Проверяющим, Алексей дал добро 11 февраля, отправил скрин в личку Майе, спасибо
+
+
 # What's This
 
 This is a final course assignment for the [DLS School](https://dls.samcs.ru/) course on deep learning (part 1, computer vision).
@@ -59,3 +62,13 @@ NB: Uploading an image with `/rotate` caption will return a rotated image, this 
 
 ![Screenshot](screenshot.jpg)
 ![Screenshot 2](screenshot2.jpeg)
+
+
+
+
+no underscores in secret names
+
+The Azure Portal currently only supports single-line secret values. Please use Azure PowerShell to set multi-line values.
+
+size for a secret is 25KB
+
